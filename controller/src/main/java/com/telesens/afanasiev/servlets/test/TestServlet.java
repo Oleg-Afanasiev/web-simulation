@@ -26,7 +26,7 @@ public class TestServlet extends PersistServlet {
 
         DaoManager daoManager = DaoManager.getInstance();
         MapDAO mapDAO = daoManager.getMapDAO();
-        Collection<Map> maps = mapDAO.getAll();
+        Collection<Map> maps = mapDAO.getRange(0, 10);
 
 //        for (Map map : maps) {
 //            out.println(String.format("<div>Map: '%s' - %s</div>", map.getName(), map.getDescribe()));

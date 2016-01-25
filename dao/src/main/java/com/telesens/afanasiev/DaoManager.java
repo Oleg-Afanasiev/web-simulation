@@ -96,7 +96,7 @@ public class DaoManager {
 
     public MapDAO getMapDAO() {
         if (this.mapDAO == null)
-            mapDAO = new MapDAOImpl(connection);
+            mapDAO = new MapDAOImpl();
 
         return mapDAO;
     }

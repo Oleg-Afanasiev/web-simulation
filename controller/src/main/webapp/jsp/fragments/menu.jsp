@@ -15,7 +15,7 @@
         <li><a href="/station/list">Остановки</a></li>
         <li><a href="/arc/list">Перегоны</a></li>
         <li><a href="/route/list">Маршруты</a></li>
-        <li><a href="/net/list">Сети</a></li>
+        <li><a href="/map/list">Сети</a></li>
       </ul>
     </li>
 

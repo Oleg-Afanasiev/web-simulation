@@ -28,7 +28,7 @@ abstract public class PersistServlet extends HttpServlet {
         // open db connection
         DaoManager daoManager = DaoManager.getInstance();
 
-        processRequest(req, resp);
+        //processRequest(req, resp);
         doGetInPersistentCtx(req, resp);
 
         // close db connection
@@ -57,41 +57,4 @@ abstract public class PersistServlet extends HttpServlet {
 
     protected void doPostInPersistentCtx(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {}
-
-    protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        String userId = userIdFromCookie(req);
-        if (userId != null) {
-            User user = getUserFromDB(Long.parseLong(userId));
-            if (user != null) {
-                HttpSession session = req.getSession();
-                session.setAttribute("activeUser", user);
-            }
-        }
-    }
-
-    private String userIdFromCookie(HttpServletRequest req) {
-        Cookie[] cookies = req.getCookies();
-
-        for (int i = 0; i < cookies.length; i++) {
-            if (cookies[i].getName().equals("userId"))
-                return cookies[i].getValue();
-        }
-
-        return null;
-    }
-
-    private User getUserFromDB(long id) {
-        DaoManager daoManager = DaoManager.getInstance();
-        UserDAO userDAO = daoManager.getUserDAO();
-        User user = null;
-        try {
-            user = userDAO.getById(id);
-        } catch (DaoException exc) {
-            logger.debug("User with specified ID wasn't found. id = " + id);
-        }
-
-        return user;
-    }
 }

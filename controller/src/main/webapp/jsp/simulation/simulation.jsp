@@ -20,6 +20,7 @@
   <div class="col-md-12 main">
     <div class="page-header">
       <h1>Симуляция</h1>
+        <a href="http://localhost:8080/greeting" class="btn btn-default">Start</a>
     </div>
   </div>
 </div>

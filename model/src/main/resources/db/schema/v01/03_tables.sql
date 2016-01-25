@@ -51,6 +51,7 @@ CREATE TABLE map (
   map_id bigserial NOT NULL,
   name varchar NOT NULL,
   describe varchar,
+  is_deleted boolean  DEFAULT FALSE,
   CONSTRAINT map_pk PRIMARY KEY (map_id)
 );
 

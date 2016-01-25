@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: oleg
-  Date: 1/19/16
-  Time: 11:15 AM
+  Date: 1/24/16
+  Time: 9:47 PM
   To change this template use File | Settings | File Templates.
 --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -12,16 +12,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-  <jsp:include page="../fragments/headTag.jsp"/>
+    <jsp:include page="./fragments/headTag.jsp"/>
 </head>
 <body>
-<jsp:include page="../fragments/menu.jsp"/>
-<div class="row">
-  <div class="col-md-12 main">
-    <div class="page-header">
-      <h1>Сети маршрутов</h1>
-    </div>
-  </div>
-</div>
+    <h3 class="text text-danger text-center">Incorrect url! </h3>
 </body>
 </html>

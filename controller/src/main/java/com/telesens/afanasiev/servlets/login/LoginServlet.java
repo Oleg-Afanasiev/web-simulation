@@ -82,7 +82,10 @@ public class LoginServlet extends PersistServlet {
                 req.setAttribute("loginMessage", user.getUserName() + " - you have been successfully logged in!");
 
                 saveUserToCookie(req, resp, user);
-                requestDispatcher = req.getRequestDispatcher("/jsp/index.jsp");
+
+                req.getRequestDispatcher("/jsp/index.jsp").forward(req, resp);
+
+                return;
             }
         }
 
@@ -123,5 +126,4 @@ public class LoginServlet extends PersistServlet {
             resp.addCookie(c);
         }
     }
-
 }

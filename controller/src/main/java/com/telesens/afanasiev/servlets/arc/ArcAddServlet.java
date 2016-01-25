@@ -44,7 +44,6 @@ public class ArcAddServlet extends PersistServlet {
             req.setAttribute("nameError", nameError);
             req.getRequestDispatcher("/jsp/arc/arcAdd.jsp").forward(req, resp);
         }
-
     }
 
     private boolean createArcSuccess(HttpServletRequest req) {

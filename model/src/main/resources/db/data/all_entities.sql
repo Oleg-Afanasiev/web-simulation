@@ -10,7 +10,7 @@ TRUNCATE TABLE bts.map_route RESTART IDENTITY CASCADE;
 
 
 -- map
-INSERT INTO bts.map (map_id, name, describe) VALUES (1, 'kharkov', 'Схема харьковских маршрутов');
+INSERT INTO bts.map (map_id, name, describe, is_deleted) VALUES (1, 'kharkov', 'Схема харьковских маршрутов', FALSE);
 
 SELECT pg_catalog.setval(pg_get_serial_sequence('bts.map', 'map_id'), (SELECT MAX(map_id) FROM bts.map)+1);
 
