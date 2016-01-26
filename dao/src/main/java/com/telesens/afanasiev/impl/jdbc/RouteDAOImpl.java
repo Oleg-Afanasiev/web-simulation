@@ -3,11 +3,15 @@ package com.telesens.afanasiev.impl.jdbc;
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.impl.DaoUtils;
 import com.telesens.afanasiev.impl.RouteImpl;
+import com.telesens.afanasiev.impl.RoutePairImpl;
 import com.telesens.afanasiev.impl.jdbc.relation.RelRouteArcDAOImpl;
+import org.omg.CORBA.DATA_CONVERSION;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -34,6 +38,123 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
 
     private static final String queryGetRange =
             "SELECT * FROM bts.route WHERE is_deleted = FALSE ORDER BY route_id LIMIT ? offset ? ; ";
+
+    private static final String queryGetRangeNotPaired =
+            "SELECT * " +
+                    "FROM bts.route " +
+                    "WHERE is_deleted = (FALSE) " +
+                    "AND route_id NOT IN" +
+                    "(SELECT route_forw_id FROM bts.route_pair) " +
+                    "AND route_id NOT IN " +
+                    "(SELECT route_back_id FROM bts.route_pair) " +
+                    "ORDER BY route_id " +
+                    "LIMIT ? offset ? ; ";
+
+    private static String queryGetRangeNotPairedNotInMap =
+            "SELECT route_id " +
+                    "FROM bts.route " +
+                    "WHERE is_deleted = (FALSE) " +
+                    "AND route_id NOT IN " +
+                    "(SELECT route_id FROM bts.map_route WHERE map_id = ? ) " +
+                    "AND route_id NOT IN " +
+                    "(SELECT route_forw_id FROM bts.route_pair) " +
+                    "AND route_id NOT IN " +
+                    "(SELECT route_back_id FROM bts.route_pair) " +
+                    "ORDER BY route_id " +
+                    "LIMIT ? offset ? ; ";
+
+    private static String queryGetRangePairedNotInMap =
+            "SELECT route_forw_id, route_back_id " +
+                    "FROM bts.route_pair " +
+                    "WHERE route_forw_id NOT IN " +
+                    "(SELECT route_id FROM bts.map_route WHERE map_id = ?) " +
+                    "AND route_forw_id NOT IN " +
+                    "(SELECT route_id FROM bts.route WHERE is_deleted = (TRUE))" +
+                    "ORDER BY route_forw_id " +
+                    "LIMIT ? offset ? ;";
+
+    @Override
+    public Collection<Route<Station>> getRangeNotPaired(long from , long size) {
+        if(from < 0 || size < 1){
+            throw new IllegalArgumentException("Please put positive values of arguments");
+        }
+
+        Connection connection = DaoManager.getInstance().getConnection();
+        Collection<Route<Station>> routes = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(queryGetRangeNotPaired)) {
+            statement.setLong(1, size);
+            statement.setLong(2, from);
+            statement.execute();
+            ResultSet rs = statement.getResultSet();
+            while (rs.next()) {
+                routes.add(createRouteFromResultSet(rs));
+            }
+        } catch(SQLException | IllegalAccessException | NoSuchFieldException exc) {
+            throw new DaoException("Can't find 'route'", exc);
+        }
+
+        return routes;
+    }
+
+    @Override
+    public Collection<RoutePair<Station>> getRangePair(long from, long size) {
+        DaoManager daoManager = DaoManager.getInstance();
+        RoutePairDAO routePairDAO = daoManager.getRoutePairDAO();
+
+        return routePairDAO.getRange(from, size);
+    }
+
+    @Override
+    public Collection<Route<Station>> getRangeNotPairedNotInMap(long from, long size, long mapId) {
+
+        if(from < 0 || size < 1){
+            throw new IllegalArgumentException("Please put positive values of arguments");
+        }
+
+        Connection connection = DaoManager.getInstance().getConnection();
+        Collection<Route<Station>> routes = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(queryGetRangeNotPairedNotInMap)) {
+            statement.setLong(1, mapId);
+            statement.setLong(2, size);
+            statement.setLong(3, from);
+            statement.execute();
+            ResultSet rs = statement.getResultSet();
+            while (rs.next()) {
+                routes.add(createRouteFromResultSet(rs));
+            }
+        } catch(SQLException | IllegalAccessException | NoSuchFieldException exc) {
+            throw new DaoException("Can't find 'route'", exc);
+        }
+
+        return routes;
+    }
+
+    @Override
+    public Collection<RoutePair<Station>> getRangePairNotInMap(long from, long size, long mapId) {
+        if(from < 0 || size < 1){
+            throw new IllegalArgumentException("Please put positive values of arguments");
+        }
+
+        Connection connection = DaoManager.getInstance().getConnection();
+        Collection<RoutePair<Station>> pairs = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(queryGetRangePairedNotInMap)) {
+            statement.setLong(1, mapId);
+            statement.setLong(2, size);
+            statement.setLong(3, from);
+            statement.execute();
+            ResultSet rs = statement.getResultSet();
+            while (rs.next()) {
+                pairs.add(createPairFromResultSet(rs));
+            }
+        } catch(SQLException | IllegalAccessException | NoSuchFieldException exc) {
+            throw new DaoException("Can't find 'route'", exc);
+        }
+
+        return pairs;
+    }
 
     @Override
     protected String getQueryById() {
@@ -109,5 +230,27 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
             arcDAO.insertOrUpdate(arc);
             relRouteArcDAO.insert(route.getId(), arc.getId());
         }
+    }
+
+    private Route<Station> createRouteFromResultSet(ResultSet rs)
+        throws SQLException, IllegalAccessException, NoSuchFieldException {
+
+        long routeId = rs.getLong("route_id");
+        Route route = getById(routeId);
+
+        return route;
+    }
+
+    private RoutePair<Station> createPairFromResultSet(ResultSet rs)
+        throws SQLException, IllegalAccessException, NoSuchFieldException {
+
+        long routeForwId = rs.getLong("route_forw_id");
+        long routeBackId = rs.getLong("route_back_id");
+
+        Route<Station> routeForw = getById(routeForwId);
+        Route<Station> routeBack = getById(routeBackId);
+
+        RoutePair<Station> routePair = new RoutePairImpl<>(routeForw, routeBack);
+        return routePair;
     }
 }

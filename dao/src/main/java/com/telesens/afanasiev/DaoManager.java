@@ -1,6 +1,7 @@
 package com.telesens.afanasiev;
 
 import com.telesens.afanasiev.impl.jdbc.*;
+import com.telesens.afanasiev.impl.jdbc.relation.RelMapRouteDAOImpl;
 import com.telesens.afanasiev.impl.jdbc.relation.RelRouteArcDAOImpl;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -23,6 +24,8 @@ public class DaoManager {
     private ArcDAO arcDAO;
     private RouteDAO routeDAO;
     private RelRouteArcDAOImpl relRouteArcDAO;
+    private RoutePairDAO routePairDAO;
+    private RelMapRouteDAOImpl relMapRouteDAO;
 
     static {
         String username;
@@ -127,5 +130,19 @@ public class DaoManager {
             this.relRouteArcDAO = new RelRouteArcDAOImpl(connection);
 
         return this.relRouteArcDAO;
+    }
+
+    public RoutePairDAO getRoutePairDAO() {
+        if (this.routePairDAO == null)
+            this.routePairDAO = new RoutePairDAOImpl(connection);
+
+        return this.routePairDAO;
+    }
+
+    public RelMapRouteDAOImpl getRelMapRouteDAO() {
+        if (this.relMapRouteDAO == null)
+            this.relMapRouteDAO = new RelMapRouteDAOImpl(connection);
+
+        return this.relMapRouteDAO;
     }
 }

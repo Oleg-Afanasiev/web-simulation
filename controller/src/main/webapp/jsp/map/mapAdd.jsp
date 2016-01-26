@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label for="describe" class="col-sm-3 control-label">Describe</label>
                         <div class="col-sm-8">
-                            <input id="describe" class="form-control" name="describe" type="text" value="${describe}">
+                            <textarea id="describe" class="form-control" rows="3" cols="30" name="describe">${describe}</textarea>
                         </div>
                     </div>
                     <div class="form-group text-center">

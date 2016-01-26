@@ -4,6 +4,7 @@ import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.impl.DaoUtils;
 import com.telesens.afanasiev.impl.MapImpl;
 import com.telesens.afanasiev.impl.RouteImpl;
+import com.telesens.afanasiev.impl.jdbc.relation.RelMapRouteDAOImpl;
 import com.telesens.afanasiev.impl.jdbc.relation.RelRouteArcDAOImpl;
 
 import java.sql.Connection;
@@ -65,7 +66,7 @@ public class MapDAOImpl extends GenericDAO<Map> implements MapDAO {
     protected Map createFromResultSet(ResultSet rs)
             throws SQLException, IllegalAccessException, NoSuchFieldException {
 
-        Long mapId = rs.getLong("map_id");
+        long mapId = rs.getLong("map_id");
         Map map = new MapImpl();
 
         map.setName(rs.getString("name"));
@@ -73,6 +74,21 @@ public class MapDAOImpl extends GenericDAO<Map> implements MapDAO {
         DaoUtils.setPrivateField(map, "id", mapId);
 
         // get rel identities
+        DaoManager daoManager = DaoManager.getInstance();
+        RelMapRouteDAOImpl relMapRouteDAO = daoManager.getRelMapRouteDAO();
+        Collection<Route<Station>> cirRoutes = relMapRouteDAO.getNotPaireByMap(mapId);
+        Collection<RoutePair<Station>> pairs = relMapRouteDAO.getPairedByMap(mapId);
+
+        try {
+            for (Route<Station> route : cirRoutes)
+                map.registerCircularRoute(route);
+
+            for (RoutePair<Station> pair : pairs)
+                map.registerSimpleRoute(pair);
+        } catch(IllegalArgumentException exc) {
+            logger.debug("Can't get 'map' with specified ID. id = "  + mapId);
+            throw new DaoException("Error in creating 'map' with specified ID. id = " + mapId);
+        }
 
         return map;
     }
@@ -90,20 +106,27 @@ public class MapDAOImpl extends GenericDAO<Map> implements MapDAO {
     }
 
     @Override
-    protected void saveRelations(Map route)
+    protected void saveRelations(Map map)
             throws SQLException {
 
         // rel table
-//        DaoManager daoManager = DaoManager.getInstance();
-//        StationDAO stationDAO = daoManager.getStationDAO();
-//        ArcDAO arcDAO = daoManager.getArcDAO();
-//        RelRouteArcDAOImpl relRouteArcDAO = daoManager.getRelRouteArcDAO();
-//
-//        relRouteArcDAO.delete(route.getId());
-//        stationDAO.insertOrUpdate(route.getFirstNode());
-//        for (Arc<Station> arc : route.getSequenceArcs()) {
-//            arcDAO.insertOrUpdate(arc);
-//            relRouteArcDAO.insert(route.getId(), arc.getId());
-//        }
+        DaoManager daoManager = DaoManager.getInstance();
+
+        RelMapRouteDAOImpl relMapRouteDAO = daoManager.getRelMapRouteDAO();
+        relMapRouteDAO.delete(map.getId());
+
+        RouteDAO routeDAO = daoManager.getRouteDAO();
+
+        for (Route<Station> route : map.getCircularRoutes()) {
+            routeDAO.insertOrUpdate(route);
+            relMapRouteDAO.insert(map.getId(), route.getId());
+        }
+
+        RoutePairDAO routePairDAO = daoManager.getRoutePairDAO();
+        for (RoutePair<Station> pair : map.getPairsRoutes()) {
+            routeDAO.insertOrUpdate(pair.getForwardRoute());
+            routeDAO.insertOrUpdate(pair.getBackRoute());
+            routePairDAO.insert(pair);
+        }
     }
 }

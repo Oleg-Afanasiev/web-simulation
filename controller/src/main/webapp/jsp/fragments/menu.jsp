@@ -10,7 +10,7 @@
     </div>
   <ul class="nav navbar-nav">
     <li data="dropdown">
-      <a data-toggle="dropdown" class="dropdown-toggle" href="/net/list">Сети маршрутов <b class="caret"></b></a>
+      <a data-toggle="dropdown" class="dropdown-toggle" href="/map/list">Сети маршрутов <b class="caret"></b></a>
       <ul role="menu" class="dropdown-menu">
         <li><a href="/station/list">Остановки</a></li>
         <li><a href="/arc/list">Перегоны</a></li>
