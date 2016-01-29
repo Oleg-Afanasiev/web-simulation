@@ -1,7 +1,7 @@
-package com.telesens.afanasiev.servlets.station;
+package com.telesens.afanasiev.servlets.edit.station;
 
 import com.telesens.afanasiev.DaoException;
-import com.telesens.afanasiev.DaoManager;
+import com.telesens.afanasiev.DaoFactory;
 import com.telesens.afanasiev.Station;
 import com.telesens.afanasiev.StationDAO;
 import com.telesens.afanasiev.servlets.PersistServlet;
@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by oleg on 1/20/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet(name="StationEditServlet", urlPatterns = "/station/edit", loadOnStartup = 0)
 public class StationEditServlet extends PersistServlet {
@@ -66,8 +68,8 @@ public class StationEditServlet extends PersistServlet {
         if (!isValidName(name))
             return false;
 
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
 
         Long id = 0L;
 
@@ -104,8 +106,8 @@ public class StationEditServlet extends PersistServlet {
             return false;
         }
 
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
 
         try {
             stationDAO.delete(id);
@@ -129,8 +131,8 @@ public class StationEditServlet extends PersistServlet {
             return null;
         }
 
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
         Station station = null;
         try {
             station = stationDAO.getById(id);

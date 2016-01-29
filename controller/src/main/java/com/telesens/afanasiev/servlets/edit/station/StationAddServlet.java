@@ -1,7 +1,7 @@
-package com.telesens.afanasiev.servlets.station;
+package com.telesens.afanasiev.servlets.edit.station;
 
 import com.telesens.afanasiev.DaoException;
-import com.telesens.afanasiev.DaoManager;
+import com.telesens.afanasiev.DaoFactory;
 import com.telesens.afanasiev.Station;
 import com.telesens.afanasiev.StationDAO;
 import com.telesens.afanasiev.impl.StationImpl;
@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by oleg on 1/20/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet(name="StationAddServlet", urlPatterns = "/station/add", loadOnStartup = 0)
 public class StationAddServlet extends PersistServlet {
@@ -47,8 +49,8 @@ public class StationAddServlet extends PersistServlet {
         if (!validName(name))
             return false;
 
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
         Station station = new StationImpl();
         station.setName(name);
 

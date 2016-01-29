@@ -14,7 +14,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by oleg on 1/19/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet(name="LogoutServlet", urlPatterns = {"/logout"}, loadOnStartup = 0)
 public class LogoutServlet extends PersistServlet {

@@ -1,4 +1,4 @@
-package com.telesens.afanasiev.servlets.arc;
+package com.telesens.afanasiev.servlets.edit.arc;
 
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.servlets.PersistServlet;
@@ -9,11 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by oleg on 1/21/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet (name="ArcEditServlet", urlPatterns = "/arc/edit", loadOnStartup = 0)
 public class ArcEditServlet extends PersistServlet {
@@ -98,9 +99,9 @@ public class ArcEditServlet extends PersistServlet {
             return false;
         }
 
-        DaoManager daoManager = DaoManager.getInstance();
-        ArcDAO arcDAO = daoManager.getArcDAO();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        ArcDAO arcDAO = daoFactory.getArcDAO();
+        StationDAO stationDAO = daoFactory.getStationDAO();
 
         try {
             Arc<Station> arc = arcDAO.getById(id);
@@ -131,12 +132,13 @@ public class ArcEditServlet extends PersistServlet {
             return false;
         }
 
-        DaoManager daoManager = DaoManager.getInstance();
-        ArcDAO arcDAO = daoManager.getArcDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
 
         try {
+            ArcDAO arcDAO = daoFactory.getArcDAO();
             arcDAO.delete(id);
         } catch(DaoException exc) {
+            //daoFactory.closeConnection();
             msgError = "Can't delete this arc";
             exc.printStackTrace();
             return false;
@@ -156,8 +158,8 @@ public class ArcEditServlet extends PersistServlet {
             return null;
         }
 
-        DaoManager daoManager = DaoManager.getInstance();
-        ArcDAO arcDAO = daoManager.getArcDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        ArcDAO arcDAO = daoFactory.getArcDAO();
         Arc<Station> arc;
         try {
             arc = arcDAO.getById(id);
@@ -170,8 +172,8 @@ public class ArcEditServlet extends PersistServlet {
     }
 
     private List<Station> getAllStations() {
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
         List<Station> stations;
 
         try {

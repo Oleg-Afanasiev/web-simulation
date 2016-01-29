@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: oleg
-  Date: 1/20/16
-  Time: 12:46 PM
-  To change this template use File | Settings | File Templates.
---%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -28,7 +21,7 @@
     <div class="col-sm-9 col-sm-offset-2 col-md-10 col-md-offset-1 main">
         <div class="panel panel-info text-center">
             <div class="panel-heading">
-                <h3 class="panel-title">Map edit form</h3>
+                <h3 class="panel-title">Edit map "${mapName}"</h3>
             </div>
             <div class="panel-body">
                 <form id="edit_form" class="form-horizontal" name="edit" action="/map/edit" method="POST">
@@ -53,12 +46,6 @@
                             </div>
                         </div>
                     </div>
-                    <c:if test="${not empty msgError}">
-                        <div class="col-xs-10 col-xs-offset-1">
-                            <p class="text-danger">${msgError}</p>
-                        </div>
-                        <c:set var="mrkError" value="has-error" />
-                    </c:if>
                 </form>
             </div>
         </div>

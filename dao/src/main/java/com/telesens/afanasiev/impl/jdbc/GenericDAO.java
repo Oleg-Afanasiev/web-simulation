@@ -13,15 +13,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by oleg on 1/17/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 abstract public class GenericDAO<T extends Identity> implements AbstractDAO<T> {
 
     protected final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
     @Override
     public void insertOrUpdate(T entity) {
-        DaoManager daoManager = DaoManager.getInstance();
-        Connection connection = daoManager.getConnection();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        Connection connection = daoFactory.getConnection();
         Long id = entity.getId();
         String queryInsert = getQueryInsertOrUpdate(id);
 
@@ -47,8 +49,8 @@ abstract public class GenericDAO<T extends Identity> implements AbstractDAO<T> {
 
     @Override
     public T getById(long id) {
-        DaoManager daoManager = DaoManager.getInstance();
-        Connection connection = daoManager.getConnection();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        Connection connection = daoFactory.getConnection();
         String queryGetId = getQueryById();
         T entity = null;
 
@@ -69,8 +71,8 @@ abstract public class GenericDAO<T extends Identity> implements AbstractDAO<T> {
 
     @Override
     public void delete(Long id) {
-        DaoManager daoManager = DaoManager.getInstance();
-        Connection connection = daoManager.getConnection();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        Connection connection = daoFactory.getConnection();
 
         if (id != null) {
             try (PreparedStatement statement = connection.prepareStatement(getQueryDelete())) {
@@ -83,12 +85,12 @@ abstract public class GenericDAO<T extends Identity> implements AbstractDAO<T> {
             throw new DaoException("Can't delete unsaved entity (id is NULL)");
     }
 
-    @Override
-    public void deleteAll(Collection<? extends T> entities) {
-        for (T entity : entities) {
-            delete(entity.getId());
-        }
-    }
+//    @Override
+//    public void deleteAll(Collection<? extends T> entities) {
+//        for (T entity : entities) {
+//            delete(entity.getId());
+//        }
+//    }
 
     @Override
     public Collection<T> getRange(long from, long size) {
@@ -96,8 +98,8 @@ abstract public class GenericDAO<T extends Identity> implements AbstractDAO<T> {
             throw new IllegalArgumentException("Please put positive values of arguments");
         }
 
-        DaoManager daoManager = DaoManager.getInstance();
-        Connection connection = daoManager.getConnection();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        Connection connection = daoFactory.getConnection();
         String queryGetRange = getQueryGetRange();
         Collection<T> entities = new ArrayList<>();
 

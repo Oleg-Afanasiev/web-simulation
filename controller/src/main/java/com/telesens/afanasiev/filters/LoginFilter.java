@@ -1,7 +1,7 @@
 package com.telesens.afanasiev.filters;
 
 import com.telesens.afanasiev.DaoException;
-import com.telesens.afanasiev.DaoManager;
+import com.telesens.afanasiev.DaoFactory;
 import com.telesens.afanasiev.User;
 import com.telesens.afanasiev.UserDAO;
 import org.slf4j.Logger;
@@ -18,7 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by oleg on 1/24/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class LoginFilter implements Filter {
     private Map<String, String> paramValues;
@@ -55,7 +57,8 @@ public class LoginFilter implements Filter {
 
         user = (User)session.getAttribute("activeUser");
         String reqURI = req.getRequestURI();
-        if (user == null && !isSkippedURI(reqURI) && reqURI.indexOf("resources") == -1) {
+        if (user == null && !isSkippedURI(reqURI) &&
+                reqURI.indexOf("css") == -1 && reqURI.indexOf("jpg") == -1) {
             logger.debug("Authorization access request");
 
             savePrevURL(req, resp);
@@ -82,17 +85,18 @@ public class LoginFilter implements Filter {
     private String userIdFromCookie(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
 
-        for (int i = 0; i < cookies.length; i++) {
-            if (cookies[i].getName().equals("userId"))
-                return cookies[i].getValue();
-        }
+        if (cookies != null)
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].getName().equals("userId"))
+                    return cookies[i].getValue();
+            }
 
         return null;
     }
 
     private User getUserFromDB(long id) {
-        DaoManager daoManager = DaoManager.getInstance();
-        UserDAO userDAO = daoManager.getUserDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        UserDAO userDAO = daoFactory.getUserDAO();
         User user = null;
         try {
             user = userDAO.getById(id);

@@ -1,7 +1,9 @@
 package com.telesens.afanasiev;
 
 /**
- * Created by oleg on 1/25/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public interface RoutePair<T extends Identity> {
     Route<T> getForwardRoute();

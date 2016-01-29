@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: oleg
-  Date: 1/19/16
-  Time: 6:47 PM
-  To change this template use File | Settings | File Templates.
---%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>

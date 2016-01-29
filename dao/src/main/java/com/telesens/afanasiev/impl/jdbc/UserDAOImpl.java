@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 import java.sql.*;
 
 /**
- * Created by oleg on 1/17/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @NoArgsConstructor
 public class UserDAOImpl extends GenericDAO<User> implements UserDAO, AbstractDAO<User> {

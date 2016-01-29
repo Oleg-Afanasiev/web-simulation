@@ -1,6 +1,6 @@
 package com.telesens.afanasiev.servlets.login;
 
-import com.telesens.afanasiev.DaoManager;
+import com.telesens.afanasiev.DaoFactory;
 import com.telesens.afanasiev.User;
 import com.telesens.afanasiev.UserDAO;
 import com.telesens.afanasiev.impl.UserImpl;
@@ -16,7 +16,9 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
- * Created by oleg on 1/19/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class SignUpServlet extends PersistServlet {
     protected static final Logger logger = LoggerFactory.getLogger(LoginServlet.class);
@@ -115,7 +117,7 @@ public class SignUpServlet extends PersistServlet {
         user.setCreated(new Date());
         user.setUpdated(new Date());
 
-        UserDAO userDAO = DaoManager.getInstance().getUserDAO();
+        UserDAO userDAO = DaoFactory.getInstance().getUserDAO();
         userDAO.insertOrUpdate(user);
 
         return true;
@@ -136,8 +138,8 @@ public class SignUpServlet extends PersistServlet {
     }
 
     private boolean existUser(String userName, String email) {
-        DaoManager daoManager = DaoManager.getInstance();
-        UserDAO userDAO = daoManager.getUserDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        UserDAO userDAO = daoFactory.getUserDAO();
 
         Collection<User> users = userDAO.getRange(0, 1000);
         for (User u : users) {

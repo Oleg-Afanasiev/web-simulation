@@ -1,6 +1,6 @@
 package com.telesens.afanasiev.servlets.login;
 
-import com.telesens.afanasiev.DaoManager;
+import com.telesens.afanasiev.DaoFactory;
 import com.telesens.afanasiev.User;
 import com.telesens.afanasiev.UserDAO;
 import com.telesens.afanasiev.servlets.PersistServlet;
@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -93,8 +92,8 @@ public class LoginServlet extends PersistServlet {
     }
 
     private User getUser(String login, String password) {
-        DaoManager daoManager = DaoManager.getInstance();
-        UserDAO userDAO = daoManager.getUserDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        UserDAO userDAO = daoFactory.getUserDAO();
         List<User> users = (List<User>) userDAO.getRange(0, 100);
 
         for (User u: users) {
@@ -108,8 +107,8 @@ public class LoginServlet extends PersistServlet {
     }
 
     private User getSameUser() {
-        DaoManager daoManager = DaoManager.getInstance();
-        UserDAO userDAO = daoManager.getUserDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        UserDAO userDAO = daoFactory.getUserDAO();
         List<User> users = (List<User>)userDAO.getRange(0, 1);
 
         if (users.size() > 0)

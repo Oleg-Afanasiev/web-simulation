@@ -9,7 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by oleg on 1/20/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class ArcDAOImpl extends GenericDAO<Arc<Station>> implements ArcDAO {
     private static final String queryInsert =
@@ -63,8 +65,8 @@ public class ArcDAOImpl extends GenericDAO<Arc<Station>> implements ArcDAO {
         Station nodeLeft;
         Station nodeRight;
 
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
 
         nodeLeft = stationDAO.getById(nodeLeftId);
         nodeRight = stationDAO.getById(nodeRightId);
@@ -93,8 +95,8 @@ public class ArcDAOImpl extends GenericDAO<Arc<Station>> implements ArcDAO {
     @Override
     protected void saveRelations(Arc<Station> arc)
         throws SQLException {
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
         stationDAO.insertOrUpdate(arc.getNodeLeft());
         stationDAO.insertOrUpdate(arc.getNodeRight());
     }

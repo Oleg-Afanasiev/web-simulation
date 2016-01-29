@@ -1,7 +1,9 @@
 package com.telesens.afanasiev;
 
 /**
- * Created by oleg on 1/17/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public interface UserDAO extends AbstractDAO<User> {
 }

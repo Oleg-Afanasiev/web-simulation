@@ -1,4 +1,4 @@
-package com.telesens.afanasiev.servlets.route;
+package com.telesens.afanasiev.servlets.edit.route;
 
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.servlets.PersistServlet;
@@ -8,14 +8,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by oleg on 1/19/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet (name="RouteListServlet", urlPatterns = "/route/list", loadOnStartup = 0)
 public class RouteListServlet extends PersistServlet {
@@ -32,8 +33,8 @@ public class RouteListServlet extends PersistServlet {
     }
 
     private Collection<Route<Station>> getAllRoutes(String sort, String order) {
-        DaoManager daoManager = DaoManager.getInstance();
-        RouteDAO routeDAO = daoManager.getRouteDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        RouteDAO routeDAO = daoFactory.getRouteDAO();
         List<Route<Station>> routes;
 
         try {

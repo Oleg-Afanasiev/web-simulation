@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by oleg on 1/26/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class RelMapRouteDAOImpl {
     private Connection connection;
@@ -133,8 +135,8 @@ public class RelMapRouteDAOImpl {
             throws SQLException, IllegalAccessException, NoSuchFieldException {
 
         long routeId = rs.getLong("route_id");
-        DaoManager daoManager = DaoManager.getInstance();
-        RouteDAO routeDAO = daoManager.getRouteDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        RouteDAO routeDAO = daoFactory.getRouteDAO();
 
         return routeDAO.getById(routeId);
     }
@@ -145,8 +147,8 @@ public class RelMapRouteDAOImpl {
         long routeForwId = rs.getLong("route_forw_id");
         long routeBackId = rs.getLong("route_back_id");
 
-        DaoManager daoManager = DaoManager.getInstance();
-        RouteDAO routeDAO = daoManager.getRouteDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        RouteDAO routeDAO = daoFactory.getRouteDAO();
         Route<Station> routeForw = routeDAO.getById(routeForwId);
         Route<Station> routeBack = routeDAO.getById(routeBackId);
         return new RoutePairImpl<>(routeForw, routeBack);

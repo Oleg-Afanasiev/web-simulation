@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by oleg on 1/20/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @NoArgsConstructor
 @Data
@@ -18,7 +20,7 @@ public class StationImpl extends IdentityImpl implements Station, Identity {
     public String toString() {
         return "StationImpl{" +
                 "id=" + super.getId() +
-                ", nameame='" + name +
+                ", name='" + name +
                 '}';
     }
 }

@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by oleg on 1/20/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @NoArgsConstructor
 @Data
@@ -53,11 +55,25 @@ public class ArcImpl<T extends Identity> extends IdentityImpl implements Arc<T>,
     }
 
     @Override
+    public boolean containsByIdOnly(T node) {
+        if (node == null || nodeLeft == null || nodeRight == null)
+            return false;
+
+        if (node.getId() == nodeLeft.getId())
+            return true;
+
+        if (node.getId() == nodeRight.getId())
+            return true;
+
+        return false;
+    }
+
+    @Override
     public T getOppositeNode(T node) {
-        if (node.equals(nodeLeft))
+        if (node.getId() == nodeLeft.getId())
             return nodeRight;
 
-        if (node.equals(nodeRight))
+        if (node.getId() == nodeRight.getId())
             return nodeLeft;
 
         return null;

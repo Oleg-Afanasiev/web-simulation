@@ -1,6 +1,6 @@
 package com.telesens.afanasiev.servlets.test;
 
-import com.telesens.afanasiev.DaoManager;
+import com.telesens.afanasiev.DaoFactory;
 import com.telesens.afanasiev.Map;
 import com.telesens.afanasiev.MapDAO;
 import com.telesens.afanasiev.servlets.PersistServlet;
@@ -13,7 +13,9 @@ import java.io.PrintWriter;
 import java.util.Collection;
 
 /**
- * Created by oleg on 1/16/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class TestServlet extends PersistServlet {
 
@@ -24,8 +26,8 @@ public class TestServlet extends PersistServlet {
         PrintWriter out = resp.getWriter();
         out.println("<h3>response from test servlet</h3>");
 
-        DaoManager daoManager = DaoManager.getInstance();
-        MapDAO mapDAO = daoManager.getMapDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        MapDAO mapDAO = daoFactory.getMapDAO();
         Collection<Map> maps = mapDAO.getRange(0, 10);
 
 //        for (Map map : maps) {

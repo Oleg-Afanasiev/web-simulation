@@ -1,9 +1,6 @@
 package com.telesens.afanasiev.servlets;
 
-import com.telesens.afanasiev.DaoException;
-import com.telesens.afanasiev.DaoManager;
-import com.telesens.afanasiev.User;
-import com.telesens.afanasiev.UserDAO;
+import com.telesens.afanasiev.DaoFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +9,9 @@ import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
- * Created by oleg on 1/16/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 abstract public class PersistServlet extends HttpServlet {
     protected static final Logger logger = LoggerFactory.getLogger(PersistServlet.class);
@@ -26,13 +25,13 @@ abstract public class PersistServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
 
         // open db connection
-        DaoManager daoManager = DaoManager.getInstance();
+        DaoFactory daoFactory = DaoFactory.getInstance();
 
         //processRequest(req, resp);
         doGetInPersistentCtx(req, resp);
 
         // close db connection
-        daoManager.closeConnection();
+        daoFactory.closeConnection();
     }
 
     @Override
@@ -44,12 +43,12 @@ abstract public class PersistServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
 
         // open db connection
-        DaoManager daoManager = DaoManager.getInstance();
+        DaoFactory daoFactory = DaoFactory.getInstance();
 
         doPostInPersistentCtx(req, resp);
 
         // close db connection
-        daoManager.closeConnection();
+        daoFactory.closeConnection();
     }
 
     protected void doGetInPersistentCtx(HttpServletRequest req, HttpServletResponse resp)

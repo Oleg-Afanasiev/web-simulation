@@ -1,4 +1,4 @@
-package com.telesens.afanasiev.servlets.arc;
+package com.telesens.afanasiev.servlets.edit.arc;
 
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.impl.ArcImpl;
@@ -14,7 +14,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by oleg on 1/21/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet (name="ArcAddServlet", urlPatterns = "/arc/add", loadOnStartup = 0)
 public class ArcAddServlet extends PersistServlet {
@@ -70,9 +72,9 @@ public class ArcAddServlet extends PersistServlet {
         if (!isNodesValid(nodeLeftId, nodeRightId))
             return false;
 
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
-        ArcDAO arcDAO = daoManager.getArcDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
+        ArcDAO arcDAO = daoFactory.getArcDAO();
 
         try {
             Station nodeLeft = stationDAO.getById(nodeLeftId);
@@ -94,8 +96,8 @@ public class ArcAddServlet extends PersistServlet {
     }
 
     private List<Station> getAllStations() {
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
         List<Station> stations;
 
         try {

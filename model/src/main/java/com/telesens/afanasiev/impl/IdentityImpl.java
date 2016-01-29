@@ -3,9 +3,10 @@ package com.telesens.afanasiev.impl;
 import com.telesens.afanasiev.Identity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 /**
- * Created by oleg on 1/17/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @NoArgsConstructor
 public class IdentityImpl implements Identity {

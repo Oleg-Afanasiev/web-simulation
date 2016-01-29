@@ -1,6 +1,3 @@
-/**
- * Created by oleg on 1/21/16.
- */
 var ParameterURL = function() {
     var _urlParam = location.search.substr(1);
 

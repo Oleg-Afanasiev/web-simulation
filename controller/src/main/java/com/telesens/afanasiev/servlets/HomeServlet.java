@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by oleg on 1/18/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class HomeServlet extends PersistServlet {
     protected static final Logger logger = LoggerFactory.getLogger(LoginServlet.class);

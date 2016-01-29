@@ -1,4 +1,4 @@
-package com.telesens.afanasiev.servlets.arc;
+package com.telesens.afanasiev.servlets.edit.arc;
 
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.servlets.PersistServlet;
@@ -13,7 +13,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by oleg on 1/19/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet (name="ArcListServlet", urlPatterns = "/arc/list", loadOnStartup = 0)
 public class ArcListServlet extends PersistServlet {
@@ -29,8 +31,8 @@ public class ArcListServlet extends PersistServlet {
     }
 
     private List<Arc<Station>> getAllArcs(String sort, String order) {
-        DaoManager daoManager = DaoManager.getInstance();
-        ArcDAO arcDAO = daoManager.getArcDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        ArcDAO arcDAO = daoFactory.getArcDAO();
 
         List<Arc<Station>> arcs = new ArrayList<>();
         try {

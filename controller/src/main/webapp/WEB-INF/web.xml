@@ -37,6 +37,7 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
         <url-pattern>*.js</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
         <url-pattern>*.otf</url-pattern>
         <url-pattern>*.eot</url-pattern>
         <url-pattern>*.svg</url-pattern>
@@ -90,6 +91,15 @@
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DownloadXMLServlet</servlet-name>
+        <servlet-class>com.telesens.afanasiev.servlets.download.DownloadXMLServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DownloadXMLServlet</servlet-name>
+        <url-pattern>/download</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>BusRunServlet</servlet-name>

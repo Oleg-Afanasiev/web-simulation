@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by oleg on 1/22/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @NoArgsConstructor
 @Data
@@ -113,4 +115,15 @@ public class RouteImpl<T extends Identity> extends IdentityImpl implements Route
         return arcRes;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("number: %s \n", number));
+        for (T node : getSequenceNodes()) {
+            sb.append(String.format("%s \n", node.toString()));
+        }
+
+        return sb.toString();
+    }
 }

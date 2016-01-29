@@ -11,11 +11,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Created by oleg on 1/16/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
-public class DaoManager {
+public class DaoFactory {
     private static BasicDataSource connectionPool;
-    private static ThreadLocal<DaoManager> daoManagerThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<DaoFactory> daoManagerThreadLocal = new ThreadLocal<>();
 
     private Connection connection;
     private MapDAO mapDAO;
@@ -60,7 +62,7 @@ public class DaoManager {
         connectionPool.setMaxTotal(20);
     }
 
-    private DaoManager() {
+    private DaoFactory() {
         try {
             this.connection = connectionPool.getConnection();
             this.connection.setAutoCommit(false);
@@ -69,9 +71,9 @@ public class DaoManager {
         }
     }
 
-    public static synchronized DaoManager getInstance() {
+    public static synchronized DaoFactory getInstance() {
         if (daoManagerThreadLocal.get() == null) {
-            daoManagerThreadLocal.set(new DaoManager());
+            daoManagerThreadLocal.set(new DaoFactory());
         }
         return daoManagerThreadLocal.get();
     }

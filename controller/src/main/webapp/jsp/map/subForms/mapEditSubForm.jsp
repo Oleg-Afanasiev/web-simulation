@@ -1,16 +1,19 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: oleg
-  Date: 1/25/16
-  Time: 7:35 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <fieldset>
     <legend>Edit map</legend>
+    <c:if test="${nameError eq 'mapError'}">
+        <div class="col-xs-10 col-xs-offset-1">
+            <p class="text-danger">${msgError}</p>
+        </div>
+    </c:if>
+    <c:if test="${not empty saveMapSuccess}">
+        <div class="col-xs-10 col-xs-offset-1">
+            <p class="text-success">Map was updated</p>
+        </div>
+    </c:if>
     <div class="form-group">
         <div class="col-sm-8 col-sm-offset-3">
             <div id="circ_routes_accordion" class="panel-group">
@@ -27,12 +30,14 @@
                             <c:if test="${not empty circRoutesInMap}">
                                 <ul class="list-unstyled text-success">
                                     <c:forEach items="${circRoutesInMap}" var="route">
-                                        <li title="'${route.firstNode.name} [ID: ${route.firstNode.id}]' - '${route.lastNode.name} [ID: ${route.lastNode.id}]'">
-                                            "${route.number} [ID: ${route.id}]"
+                                        <li>
+                                            <span title="${route.toString()}">
+                                                "${route.number} [ID: ${route.id}]"
+                                            </span>
                                         </li>
                                     </c:forEach>
                                 </ul>
-                                <input id="undock_circ_route_btn" class="btn btn-xs btn-info" name="undockCircRoute" type="submit" value="Undock">
+                                <input id="undock_circ_route_btn" class="btn btn-xs btn-info" name="undockCircRoute" type="submit" value="Undock all">
                             </c:if>
                         </div>
                     </div>
@@ -57,11 +62,16 @@
                                 <ul class="list-unstyled text-success">
                                     <c:forEach items="${pairsRoutesInMap}" var="pair">
                                         <li>
-                                            "${pair.forwardRoute.number} [ID: ${pair.forwardRoute.id}]" - "${pair.backRoute.number} [ID: ${pair.backRoute.id}]"
+                                            <span title="${pair.forwardRoute.toString()}">
+                                                "${pair.forwardRoute.number} [ID: ${pair.forwardRoute.id}]"
+                                            </span> -
+                                            <span title="${pair.backRoute.toString()}">
+                                                "${pair.backRoute.number} [ID: ${pair.backRoute.id}]"
+                                            </span>
                                         </li>
                                     </c:forEach>
                                 </ul>
-                                <input id="undock_pair_route_btn" class="btn btn-xs btn-info" name="undockPairRoute" type="submit" value="Undock">
+                                <input id="undock_pair_route_btn" class="btn btn-xs btn-info" name="undockPairRoute" type="submit" value="Undock all">
                             </c:if>
                         </div>
                     </div>
@@ -72,7 +82,8 @@
     <div class="form-group">
         <label for="map_id" class="col-sm-3 control-label">ID</label>
         <div class="col-sm-8">
-            <input id="map_id" class="form-control disabled" type="text" name="mapId" readonly="readonly" value="${mapId}">
+            <input id="map_id" class="form-control disabled" type="text" name="mapId" readonly="readonly" value="${id}">
+            <input type="hidden" name="id" value="${id}">
         </div>
     </div>
     <div class="form-group ${markMapNameError}">

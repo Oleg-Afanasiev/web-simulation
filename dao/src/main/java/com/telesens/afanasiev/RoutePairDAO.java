@@ -3,11 +3,13 @@ package com.telesens.afanasiev;
 import java.util.Collection;
 
 /**
- * Created by oleg on 1/25/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public interface RoutePairDAO {
     void insert(RoutePair<Station> pair);
-    //void delete(Long id);
+    void delete(long routeForwId, long routeBackId);
     //void deleteAll(Collection<? extends T> entities);
 
     /**
@@ -17,4 +19,6 @@ public interface RoutePairDAO {
      * @return Collection of Entities
      */
     Collection<RoutePair<Station>> getRange(long from, long size);
+    RoutePair<Station> getById(long routeForwId, long routeBackId);
+    Route<Station> getBackByForwId(long routForwId);
 }

@@ -1,15 +1,18 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: oleg
-  Date: 1/26/16
-  Time: 11:25 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fieldset>
     <legend>Arc add form</legend>
+    <c:if test="${nameError eq 'arcError'}">
+        <div class="col-xs-10 col-xs-offset-1">
+            <p class="text-danger">${msgError}</p>
+        </div>
+    </c:if>
+    <c:if test="${not empty saveArcSuccess}">
+        <div class="col-xs-10 col-xs-offset-1">
+            <p class="text-success">Arc was saved</p>
+        </div>
+    </c:if>
     <div class="form-group ${markNodeLeftError}">
         <label for="node_left" class="col-sm-3 control-label">Node left</label>
         <div class="col-sm-8">

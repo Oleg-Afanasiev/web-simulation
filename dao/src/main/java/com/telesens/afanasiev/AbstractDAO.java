@@ -3,13 +3,15 @@ package com.telesens.afanasiev;
 import java.util.Collection;
 
 /**
- * Created by oleg on 1/17/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public interface AbstractDAO<T> {
     void insertOrUpdate(T entity);
     T getById(long id);
     void delete(Long id);
-    void deleteAll(Collection<? extends T> entities);
+    //void deleteAll(Collection<? extends T> entities);
 
     /**
      *

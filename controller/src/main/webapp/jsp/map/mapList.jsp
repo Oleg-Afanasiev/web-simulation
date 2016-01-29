@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: oleg
-  Date: 1/19/16
-  Time: 11:15 AM
-  To change this template use File | Settings | File Templates.
---%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -33,20 +26,30 @@
                 <tr class="bg-success">
                     <th id="head_id" class="text-center">ID</th>
                     <th id="head_name" class="text-center">Name</th>
-                    <th id="head_circ_count" class="text-center">Circular route</th>
-                    <th id="head_simple_count" class="text-center">Simple routes</th>
+                    <th id="head_circ_count" class="text-center">Circular routes</th>
+                    <th id="head_simple_count" class="text-center">Pairs routes</th>
+                    <th class="text-center">XML</th>
+                    <th class="text-center"></th>
                 </tr>
                 </thead>
                 <c:forEach items="${maps}" var="map">
                     <tr>
                         <td class="text-center">${map.id}</td>
                         <td class="text-center">
-                            <a class="text-center link" href="/map/edit?id=${map.id}" name="mapId" title="edit map">
+                            <a class="text-center link" href="/map/passport?id=${map.id}" name="mapId" title="edit map">
                                     ${map.name}
                             </a>
                         </td>
-                        <td class="text-center">0</td>
-                        <td class="text-center">0</td>
+                        <td class="text-center">${map.circularRoutes.size()}</td>
+                        <td class="text-center">${map.pairsRoutes.size()}</td>
+                        <td class="text-center">
+                            <a href="/download?target=map&id=${map.id}">
+                                <span class="glyphicon glyphicon-download"></span>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-xs btn-info" href="/map/edit?id=${map.id}">edit</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

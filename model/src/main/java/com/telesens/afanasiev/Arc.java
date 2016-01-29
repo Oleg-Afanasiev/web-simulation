@@ -13,5 +13,6 @@ public interface Arc<T extends Identity> extends Identity {
     void setDuration(int duration);
 
     boolean containsNode(T node);
+    boolean containsByIdOnly(T node);
     T getOppositeNode(T node);
 }

@@ -1,9 +1,3 @@
-/**
- * Created by oleg on 1/25/16.
- */
-/**
- * Created by oleg on 1/21/16.
- */
 var sortClickHandle;
 
 function onClickHeadId() {

@@ -11,7 +11,9 @@ import java.sql.SQLException;
 
 
 /**
- * Created by oleg on 1/20/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class StationDAOImpl extends GenericDAO<Station> implements StationDAO {
     private static final String queryGetById =

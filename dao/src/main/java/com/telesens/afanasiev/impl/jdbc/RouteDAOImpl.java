@@ -5,7 +5,6 @@ import com.telesens.afanasiev.impl.DaoUtils;
 import com.telesens.afanasiev.impl.RouteImpl;
 import com.telesens.afanasiev.impl.RoutePairImpl;
 import com.telesens.afanasiev.impl.jdbc.relation.RelRouteArcDAOImpl;
-import org.omg.CORBA.DATA_CONVERSION;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by oleg on 1/22/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO {
     private static final String queryInsert =
@@ -34,10 +35,14 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
                     "and is_deleted = FALSE ;";
 
     private static final String queryDelete =
-            "UPDATE bts.route SET (is_deleted) = (TRUE) WHERE route_id = ? ;";
+            "UPDATE bts.route SET (is_deleted) = (TRUE) " +
+                    "WHERE route_id = ? " +
+                    "AND route_id NOT IN (SELECT route_id FROM bts.map_route) " +
+                    "AND route_id NOT IN (SELECT route_forw_id FROM bts.route_pair) " +
+                    "AND route_id NOT IN (SELECT route_back_id FROM bts.route_pair);";
 
     private static final String queryGetRange =
-            "SELECT * FROM bts.route WHERE is_deleted = FALSE ORDER BY route_id LIMIT ? offset ? ; ";
+            "SELECT * FROM bts.route WHERE is_deleted = (FALSE) ORDER BY route_id LIMIT ? offset ? ; ";
 
     private static final String queryGetRangeNotPaired =
             "SELECT * " +
@@ -79,7 +84,7 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
             throw new IllegalArgumentException("Please put positive values of arguments");
         }
 
-        Connection connection = DaoManager.getInstance().getConnection();
+        Connection connection = DaoFactory.getInstance().getConnection();
         Collection<Route<Station>> routes = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(queryGetRangeNotPaired)) {
@@ -99,8 +104,8 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
 
     @Override
     public Collection<RoutePair<Station>> getRangePair(long from, long size) {
-        DaoManager daoManager = DaoManager.getInstance();
-        RoutePairDAO routePairDAO = daoManager.getRoutePairDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        RoutePairDAO routePairDAO = daoFactory.getRoutePairDAO();
 
         return routePairDAO.getRange(from, size);
     }
@@ -112,7 +117,7 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
             throw new IllegalArgumentException("Please put positive values of arguments");
         }
 
-        Connection connection = DaoManager.getInstance().getConnection();
+        Connection connection = DaoFactory.getInstance().getConnection();
         Collection<Route<Station>> routes = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(queryGetRangeNotPairedNotInMap)) {
@@ -137,7 +142,7 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
             throw new IllegalArgumentException("Please put positive values of arguments");
         }
 
-        Connection connection = DaoManager.getInstance().getConnection();
+        Connection connection = DaoFactory.getInstance().getConnection();
         Collection<RoutePair<Station>> pairs = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(queryGetRangePairedNotInMap)) {
@@ -180,8 +185,8 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
     protected Route<Station> createFromResultSet(ResultSet rs)
             throws SQLException, IllegalAccessException, NoSuchFieldException {
 
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
         Station firstNode = stationDAO.getById(rs.getLong("first_node_id"));
 
         Long routeId = rs.getLong("route_id");
@@ -193,7 +198,7 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
         route.setFirstNode(firstNode);
         DaoUtils.setPrivateField(route, "id", routeId);
 
-        RelRouteArcDAOImpl routeArcDAO = daoManager.getRelRouteArcDAO();
+        RelRouteArcDAOImpl routeArcDAO = daoFactory.getRelRouteArcDAO();
         Collection<Arc<Station>> relArcs = routeArcDAO.getAllByRoute(routeId);
         route.setSequenceArcs(relArcs);
 
@@ -219,10 +224,10 @@ public class RouteDAOImpl extends GenericDAO<Route<Station>> implements RouteDAO
         throws SQLException {
 
         // rel table
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
-        ArcDAO arcDAO = daoManager.getArcDAO();
-        RelRouteArcDAOImpl relRouteArcDAO = daoManager.getRelRouteArcDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
+        ArcDAO arcDAO = daoFactory.getArcDAO();
+        RelRouteArcDAOImpl relRouteArcDAO = daoFactory.getRelRouteArcDAO();
 
         relRouteArcDAO.delete(route.getId());
         stationDAO.insertOrUpdate(route.getFirstNode());

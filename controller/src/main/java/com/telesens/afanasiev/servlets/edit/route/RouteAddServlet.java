@@ -1,4 +1,4 @@
-package com.telesens.afanasiev.servlets.route;
+package com.telesens.afanasiev.servlets.edit.route;
 
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.impl.RouteImpl;
@@ -13,7 +13,9 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
- * Created by oleg on 1/22/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet (name="RouteAddServlet", urlPatterns = "/route/add", loadOnStartup = 0)
 public class RouteAddServlet extends PersistServlet {
@@ -74,8 +76,8 @@ public class RouteAddServlet extends PersistServlet {
     }
 
     private List<Arc<Station>> getAllArcs(long lastNodeId, Collection<Arc<Station>> arcSeq) {
-        DaoManager daoManager = DaoManager.getInstance();
-        ArcDAO arcDAO = daoManager.getArcDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        ArcDAO arcDAO = daoFactory.getArcDAO();
         List<Arc<Station>> arcs;
 
         try {
@@ -110,8 +112,8 @@ public class RouteAddServlet extends PersistServlet {
     }
 
     private List<Station> getAllStations() {
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
         List<Station> stations;
 
         try {
@@ -158,8 +160,8 @@ public class RouteAddServlet extends PersistServlet {
     }
 
     private Arc<Station> getArcByParam(String paramId) {
-        DaoManager daoManager = DaoManager.getInstance();
-        ArcDAO arcDAO = daoManager.getArcDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        ArcDAO arcDAO = daoFactory.getArcDAO();
         Arc<Station> arc = null;
         long arcId = 0;
         try {
@@ -198,8 +200,8 @@ public class RouteAddServlet extends PersistServlet {
 
         try {
             if (firstNodeId > 0) {
-                DaoManager daoManager = DaoManager.getInstance();
-                StationDAO stationDAO = daoManager.getStationDAO();
+                DaoFactory daoFactory = DaoFactory.getInstance();
+                StationDAO stationDAO = daoFactory.getStationDAO();
                 node = stationDAO.getById(firstNodeId);
                 nodeSeq.add(node);
             }
@@ -248,9 +250,9 @@ public class RouteAddServlet extends PersistServlet {
         if (!firstNodeValid(firstNodeId))
             return false;
 
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
-        RouteDAO routeDAO = daoManager.getRouteDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
+        RouteDAO routeDAO = daoFactory.getRouteDAO();
         Collection<Arc<Station>> arcSeq = getArcSequence(req);
 
         if (arcSeq.size() == 0) {
@@ -285,7 +287,7 @@ public class RouteAddServlet extends PersistServlet {
     private boolean isNumberValid(String number) {
         if (number == null || number.isEmpty()) {
             nameError = "nullNumber";
-            msgError = "Please, input number value";
+            msgError = "Please, input 'number' value";
             return false;
         }
 

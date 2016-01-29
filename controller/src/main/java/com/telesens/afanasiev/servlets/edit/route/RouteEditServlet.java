@@ -1,4 +1,4 @@
-package com.telesens.afanasiev.servlets.route;
+package com.telesens.afanasiev.servlets.edit.route;
 
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.servlets.PersistServlet;
@@ -14,7 +14,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by oleg on 1/23/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet(name="RouteEditServlet", urlPatterns = "/route/edit", loadOnStartup = 0)
 public class RouteEditServlet extends PersistServlet {
@@ -86,8 +88,8 @@ public class RouteEditServlet extends PersistServlet {
             logger.debug("Can't read route from parameters");
             return null;
         }
-        DaoManager daoManager = DaoManager.getInstance();
-        RouteDAO routeDAO = daoManager.getRouteDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        RouteDAO routeDAO = daoFactory.getRouteDAO();
         Route<Station> route;
 
         try {
@@ -139,8 +141,8 @@ public class RouteEditServlet extends PersistServlet {
             return false;
 
         try {
-            DaoManager daoManager = DaoManager.getInstance();
-            RouteDAO routeDAO = daoManager.getRouteDAO();
+            DaoFactory daoFactory = DaoFactory.getInstance();
+            RouteDAO routeDAO = daoFactory.getRouteDAO();
             Collection<Arc<Station>> arcSeq = getArcSeq(req);
 
             Route<Station> route = routeDAO.getById(id);
@@ -171,12 +173,13 @@ public class RouteEditServlet extends PersistServlet {
             return false;
         }
 
-        DaoManager daoManager = DaoManager.getInstance();
-        RouteDAO routeDAO = daoManager.getRouteDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        RouteDAO routeDAO = daoFactory.getRouteDAO();
 
         try {
             routeDAO.delete(id);
         } catch(DaoException exc) {
+            daoFactory.closeConnection();
             msgError = "Can't delete this route";
             logger.debug("Unsuccessful attempt to delete route");
             exc.printStackTrace();
@@ -215,8 +218,8 @@ public class RouteEditServlet extends PersistServlet {
             logger.debug("Can't read arc id from parameters");
             throw new DaoException("Can't read id");
         }
-        DaoManager daoManager = DaoManager.getInstance();
-        ArcDAO arcDAO = daoManager.getArcDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        ArcDAO arcDAO = daoFactory.getArcDAO();
 
         Arc<Station> arc = arcDAO.getById(id);
 

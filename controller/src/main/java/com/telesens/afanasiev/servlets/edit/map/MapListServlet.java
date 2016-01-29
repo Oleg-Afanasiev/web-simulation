@@ -1,4 +1,4 @@
-package com.telesens.afanasiev.servlets.map;
+package com.telesens.afanasiev.servlets.edit.map;
 
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.servlets.PersistServlet;
@@ -36,8 +36,8 @@ public class MapListServlet extends PersistServlet {
     }
 
     Collection<Map> getAllMaps(String sort, String order) {
-        DaoManager daoManager = DaoManager.getInstance();
-        MapDAO mapDAO = daoManager.getMapDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        MapDAO mapDAO = daoFactory.getMapDAO();
         List<Map> maps;
 
         try {

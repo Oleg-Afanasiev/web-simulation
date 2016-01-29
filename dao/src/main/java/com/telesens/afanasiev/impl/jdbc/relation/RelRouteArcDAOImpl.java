@@ -1,7 +1,6 @@
 package com.telesens.afanasiev.impl.jdbc.relation;
 
 import com.telesens.afanasiev.*;
-import com.telesens.afanasiev.impl.ArcImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,9 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-
 /**
- * Created by oleg on 1/22/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class RelRouteArcDAOImpl {
 
@@ -101,8 +101,8 @@ public class RelRouteArcDAOImpl {
     private Arc<Station> createArcFromResultSet(ResultSet rs)
             throws SQLException, IllegalAccessException, NoSuchFieldException {
 
-        DaoManager daoManager = DaoManager.getInstance();
-        ArcDAO arcDAO = daoManager.getArcDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        ArcDAO arcDAO = daoFactory.getArcDAO();
         Long arcId = rs.getLong("arc_id");
 
         return arcDAO.getById(arcId);
@@ -112,8 +112,8 @@ public class RelRouteArcDAOImpl {
             throws SQLException, IllegalAccessException, NoSuchFieldException {
 
         Long routeId = rs.getLong("route_id");
-        DaoManager daoManager = DaoManager.getInstance();
-        RouteDAO routeDAO = daoManager.getRouteDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        RouteDAO routeDAO = daoFactory.getRouteDAO();
 
         return routeDAO.getById(routeId);
     }

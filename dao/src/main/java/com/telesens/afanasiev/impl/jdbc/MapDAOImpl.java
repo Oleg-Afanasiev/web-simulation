@@ -3,19 +3,17 @@ package com.telesens.afanasiev.impl.jdbc;
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.impl.DaoUtils;
 import com.telesens.afanasiev.impl.MapImpl;
-import com.telesens.afanasiev.impl.RouteImpl;
 import com.telesens.afanasiev.impl.jdbc.relation.RelMapRouteDAOImpl;
-import com.telesens.afanasiev.impl.jdbc.relation.RelRouteArcDAOImpl;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by oleg on 1/16/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class MapDAOImpl extends GenericDAO<Map> implements MapDAO {
 
@@ -74,8 +72,8 @@ public class MapDAOImpl extends GenericDAO<Map> implements MapDAO {
         DaoUtils.setPrivateField(map, "id", mapId);
 
         // get rel identities
-        DaoManager daoManager = DaoManager.getInstance();
-        RelMapRouteDAOImpl relMapRouteDAO = daoManager.getRelMapRouteDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        RelMapRouteDAOImpl relMapRouteDAO = daoFactory.getRelMapRouteDAO();
         Collection<Route<Station>> cirRoutes = relMapRouteDAO.getNotPaireByMap(mapId);
         Collection<RoutePair<Station>> pairs = relMapRouteDAO.getPairedByMap(mapId);
 
@@ -110,23 +108,32 @@ public class MapDAOImpl extends GenericDAO<Map> implements MapDAO {
             throws SQLException {
 
         // rel table
-        DaoManager daoManager = DaoManager.getInstance();
+        DaoFactory daoFactory = DaoFactory.getInstance();
 
-        RelMapRouteDAOImpl relMapRouteDAO = daoManager.getRelMapRouteDAO();
+        RelMapRouteDAOImpl relMapRouteDAO = daoFactory.getRelMapRouteDAO();
         relMapRouteDAO.delete(map.getId());
 
-        RouteDAO routeDAO = daoManager.getRouteDAO();
+        RouteDAO routeDAO = daoFactory.getRouteDAO();
 
         for (Route<Station> route : map.getCircularRoutes()) {
             routeDAO.insertOrUpdate(route);
             relMapRouteDAO.insert(map.getId(), route.getId());
         }
 
-        RoutePairDAO routePairDAO = daoManager.getRoutePairDAO();
+        RoutePairDAO routePairDAO = daoFactory.getRoutePairDAO();
         for (RoutePair<Station> pair : map.getPairsRoutes()) {
             routeDAO.insertOrUpdate(pair.getForwardRoute());
             routeDAO.insertOrUpdate(pair.getBackRoute());
-            routePairDAO.insert(pair);
+
+            relMapRouteDAO.insert(map.getId(), pair.getForwardRoute().getId());
+            relMapRouteDAO.insert(map.getId(), pair.getBackRoute().getId());
+
+            try {
+                routePairDAO.getById(pair.getForwardRoute().getId(), pair.getBackRoute().getId());
+            } catch(DaoException exc) {
+                routePairDAO.insert(pair);
+            }
+
         }
     }
 }

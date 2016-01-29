@@ -1,4 +1,4 @@
-package com.telesens.afanasiev.servlets.map;
+package com.telesens.afanasiev.servlets.edit.map;
 
 import com.telesens.afanasiev.*;
 import com.telesens.afanasiev.impl.MapImpl;
@@ -54,8 +54,8 @@ public class MapAddServlet extends PersistServlet {
         if (!isNameValid(name))
             return false;
 
-        DaoManager daoManager = DaoManager.getInstance();
-        MapDAO mapDAO = daoManager.getMapDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        MapDAO mapDAO = daoFactory.getMapDAO();
 
         try {
             Map map = new MapImpl();
@@ -84,8 +84,8 @@ public class MapAddServlet extends PersistServlet {
     }
 
     private List<Route<Station>> getAllRoutes() {
-        DaoManager daoManager = DaoManager.getInstance();
-        RouteDAO routeDAO = daoManager.getRouteDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        RouteDAO routeDAO = daoFactory.getRouteDAO();
         List<Route<Station>> routes;
 
         try {

@@ -1,6 +1,3 @@
-/**
- * Created by oleg on 1/21/16.
- */
 function onClickDelete() {
     var name = $('#station_name').val();
     var id = $('#station_id').val();

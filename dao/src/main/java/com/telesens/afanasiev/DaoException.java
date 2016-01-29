@@ -1,7 +1,9 @@
 package com.telesens.afanasiev;
 
 /**
- * Created by oleg on 1/16/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 public class DaoException extends RuntimeException {
     public DaoException(String message, Throwable e) {

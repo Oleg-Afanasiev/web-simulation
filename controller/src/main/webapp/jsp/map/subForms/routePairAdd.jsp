@@ -1,15 +1,18 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: oleg
-  Date: 1/25/16
-  Time: 10:18 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fieldset>
     <legend>Route pair add form</legend>
+    <c:if test="${nameError eq 'pairError'}">
+        <div class="col-xs-10 col-xs-offset-1">
+            <p class="text-danger">${msgError}</p>
+        </div>
+    </c:if>
+    <c:if test="${not empty savePairSuccess}">
+        <div class="col-xs-10 col-xs-offset-1">
+            <p class="text-success">Pair was saved</p>
+        </div>
+    </c:if>
     <div class="form-group">
         <label for="route_forw" class="col-sm-3 control-label">Route forward</label>
         <div class="col-sm-8">

@@ -1,7 +1,7 @@
-package com.telesens.afanasiev.servlets.station;
+package com.telesens.afanasiev.servlets.edit.station;
 
 import com.telesens.afanasiev.DaoException;
-import com.telesens.afanasiev.DaoManager;
+import com.telesens.afanasiev.DaoFactory;
 import com.telesens.afanasiev.Station;
 import com.telesens.afanasiev.StationDAO;
 import com.telesens.afanasiev.servlets.PersistServlet;
@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by oleg on 1/19/16.
+ *
+ * @author  Oleg Afanasiev <oleg.kh81@gmail.com>
+ * @version 0.1
  */
 @WebServlet (name="StationListServlet", urlPatterns = "/station/list", loadOnStartup = 0)
 public class StationListServlet extends PersistServlet {
@@ -32,8 +34,8 @@ public class StationListServlet extends PersistServlet {
     }
 
     private List<Station> getAllStations(String sort, String order) {
-        DaoManager daoManager = DaoManager.getInstance();
-        StationDAO stationDAO = daoManager.getStationDAO();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        StationDAO stationDAO = daoFactory.getStationDAO();
 
         List<Station> stations = new ArrayList<>();
         try {
